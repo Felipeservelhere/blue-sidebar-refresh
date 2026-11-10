@@ -21,7 +21,8 @@ const groups = [
 
 function NavIcon({ Icon, on }: { Icon: typeof Home; on: boolean }) {
   const ref = useRef<SVGSVGElement>(null);
-  useEffect(() => { ref.current?.querySelectorAll("*").forEach((el) => el.setAttribute("pathLength", "1")); }, []);
+  useEffect(() => { ref.current?.querySelectorAll("*").forEach((el) => el.setAttribute("pathLength", "1"));
+    if (Icon === History) ref.current?.lastElementChild?.classList.add("clock-hands"); }, [Icon]);
   return <Icon ref={ref} className={`nav-icon h-5 w-5 shrink-0 ${on ? "text-nav-active-edge" : ""}`} />;
 }
 
