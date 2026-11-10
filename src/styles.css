@@ -171,3 +171,13 @@
   --font-sans: "Plus Jakarta Sans", sans-serif;
 }
 @utility bg-nav-active { background: var(--nav-active); }
+
+:root { --nav-wave: oklch(0.62 0.2 255 / 55%); }
+@theme inline { --color-nav-wave: var(--nav-wave); }
+@keyframes icon-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@utility nav-icon {
+  & * { stroke-width: 1.4; opacity: 0.75; transition: stroke-width .3s, opacity .3s; }
+  .group:hover & *, .group[data-active="true"] & * {
+    stroke-width: 2.2; opacity: 1; stroke-dasharray: 1; animation: icon-draw .7s ease-out both;
+  }
+}

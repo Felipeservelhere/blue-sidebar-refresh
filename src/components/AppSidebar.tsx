@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ChevronsLeft, ChevronRight, Home, Receipt, History, FileText, ArrowRightLeft, Box,
   BarChart3, Users, ShoppingBag, Wallet, HandCoins, CreditCard, Contact, Settings,
@@ -19,16 +19,32 @@ const groups = [
   ]},
 ];
 
+function NavIcon({ Icon, on }: { Icon: typeof Home; on: boolean }) {
+  const ref = useRef<SVGSVGElement>(null);
+  useEffect(() => { ref.current?.querySelectorAll("*").forEach((el) => el.setAttribute("pathLength", "1")); }, []);
+  return <Icon ref={ref} className={`nav-icon h-5 w-5 shrink-0 ${on ? "text-nav-active-edge" : ""}`} />;
+}
+
+function Waves() {
+  return (
+    <svg viewBox="0 0 120 40" preserveAspectRatio="none" className="pointer-events-none absolute inset-y-0 right-0 h-full w-2/3 text-nav-wave">
+      <path d="M20 40 C50 40 55 15 85 12 C105 10 112 0 120 0 L120 40 Z" fill="currentColor" />
+      <path d="M50 40 C75 38 80 22 100 20 C112 19 116 12 120 10 L120 40 Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Dashboard");
   const item = (t: string, Icon: typeof Home, sub?: boolean) => {
     const on = active === t;
     return (
-      <button key={t} title={t} onClick={() => setActive(t)}
-        className={`flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-sm transition-colors ${on ? "bg-nav-active border-l-4 border-nav-active-edge font-semibold" : "text-nav-foreground hover:bg-nav-border"}`}>
-        <Icon className={`h-5 w-5 shrink-0 ${on ? "text-nav-active-edge" : ""}`} />
-        {!collapsed && <span className="flex-1 text-left">{t}</span>}
+      <button key={t} title={t} data-active={on} onClick={() => setActive(t)}
+        className={`group relative overflow-hidden flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-sm transition-colors ${on ? "bg-nav-active border-l-4 border-nav-active-edge font-semibold" : "text-nav-foreground hover:bg-nav-border"}`}>
+        {on && <Waves />}
+        <NavIcon Icon={Icon} on={on} />
+        {!collapsed && <span className="relative flex-1 text-left">{t}</span>}
         {!collapsed && sub && <ChevronRight className="h-4 w-4" />}
       </button>
     );
