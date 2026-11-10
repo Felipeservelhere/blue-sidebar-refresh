@@ -23,7 +23,13 @@ function NavIcon({ Icon, on }: { Icon: typeof Home; on: boolean }) {
   const ref = useRef<SVGSVGElement>(null);
   useEffect(() => { ref.current?.querySelectorAll("*").forEach((el) => el.setAttribute("pathLength", "1"));
     if (Icon === History) ref.current?.lastElementChild?.classList.add("clock-hands"); }, [Icon]);
-  return <Icon ref={ref} className={`nav-icon h-5 w-5 shrink-0 ${on ? "text-nav-active-edge" : ""}`} />;
+  const c = on ? "text-nav-active-edge" : "";
+  return (
+    <span className="nav-icon relative h-5 w-5 shrink-0">
+      <Icon className={`nav-base absolute inset-0 h-5 w-5 ${c}`} />
+      <Icon ref={ref} className={`nav-draw absolute inset-0 h-5 w-5 ${c}`} />
+    </span>
+  );
 }
 
 function Waves() {

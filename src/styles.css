@@ -174,11 +174,12 @@
 
 :root { --nav-wave: oklch(0.62 0.2 255 / 55%); }
 @theme inline { --color-nav-wave: var(--nav-wave); }
-.nav-icon * { stroke-width: 1.4; opacity: 0.7; stroke-dasharray: 1; stroke-dashoffset: 0;
-  transition: stroke-dashoffset .6s ease-out, stroke-width .3s, opacity .3s; }
-.nav-icon { transition: transform .3s; }
+.nav-base * { stroke-width: 1.4; opacity: 0.7; transition: opacity .3s; }
+.nav-draw * { stroke-width: 2.1; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .6s ease-out; }
+.nav-icon { display: inline-block; transition: transform .3s; }
 .group:hover .nav-icon { transform: scale(1.1); }
-.group:hover .nav-icon *, .group[data-active="true"] .nav-icon * { stroke-width: 2.1; opacity: 1; stroke-dashoffset: 0; }
+.group:hover .nav-draw *, .group[data-active="true"] .nav-draw * { stroke-dashoffset: 0; }
+.group:hover .nav-base *, .group[data-active="true"] .nav-base * { opacity: 0.35; }
 
 @keyframes clock-spin { to { transform: rotate(360deg); } }
 .nav-icon .clock-hands { stroke-dashoffset: 1; opacity: 0; transform-origin: 12px 12px; transform-box: view-box; }
