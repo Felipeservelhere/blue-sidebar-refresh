@@ -153,3 +153,21 @@
     color: var(--color-foreground);
   }
 }
+
+:root {
+  --nav: oklch(0.2 0.06 260);
+  --nav-foreground: oklch(0.93 0.02 255);
+  --nav-muted: oklch(0.68 0.05 255);
+  --nav-border: oklch(1 0 0 / 8%);
+  --nav-active: linear-gradient(110deg, oklch(0.55 0.2 260 / 55%), oklch(0.3 0.1 260 / 40%));
+  --nav-active-edge: oklch(0.65 0.2 255);
+}
+@theme inline {
+  --color-nav: var(--nav);
+  --color-nav-foreground: var(--nav-foreground);
+  --color-nav-muted: var(--nav-muted);
+  --color-nav-border: var(--nav-border);
+  --color-nav-active-edge: var(--nav-active-edge);
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+@utility bg-nav-active { background: var(--nav-active); }
