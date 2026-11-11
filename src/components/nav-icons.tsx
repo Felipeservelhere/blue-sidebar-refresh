@@ -14,7 +14,7 @@ const x = { "data-extra": "" };
 export const NewSaleIcon = mk("NewSale", <>
   <circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" />
   <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-  <path d="M13 8v5" /><path d="M10.5 10.5h5" /><path {...x} d="M1 9h2" /><path {...x} d="M1.5 13h3" />
+  <path d="M13 9v5" /><path d="M10.5 11.5h5" /><path {...x} d="M1 9h2" /><path {...x} d="M1.5 13h3" />
 </>);
 export const InvoiceGavelIcon = mk("InvoiceGavel", <>
   <path d="M12 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8l6 6v3" /><path d="M14 2v6h6" />
@@ -27,8 +27,9 @@ export const EmployeeIcon = mk("Employee", <>
   <path {...x} d="M16 14v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" /><path {...x} d="M14 17.5h8" />
 </>);
 export const OnlineOrderIcon = mk("OnlineOrder", <>
-  <path d="M3 7h11v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><path d="M6 7V5a2.5 2.5 0 0 1 5 0v2" />
-  <circle {...x} cx="18" cy="16" r="4.5" /><path {...x} d="M18 11.5a6.5 6.5 0 0 0 0 9 6.5 6.5 0 0 0 0-9" /><path {...x} d="M13.5 16h9" />
+  <path d="M15 9.5a3 3 0 0 1-6 0" /><path d="M3.103 6.034h17.794" />
+  <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
+  <circle {...x} cx="12" cy="17.8" r="2.7" /><path {...x} d="M12 15.1a3.8 3.8 0 0 0 0 5.4 3.8 3.8 0 0 0 0-5.4" /><path {...x} d="M9.3 17.8h5.4" />
 </>);
 export const CashIcon = mk("Cash", <>
   <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
