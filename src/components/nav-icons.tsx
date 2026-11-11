@@ -12,12 +12,14 @@ const mk = (name: string, body: React.ReactNode) => {
 const x = { "data-extra": "" };
 
 export const NewSaleIcon = mk("NewSale", <>
-  <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
-  <path d="M12 7v6" /><path d="M9 10h6" /><path {...x} d="M8 16h8" />
+  <circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" />
+  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+  <path d="M13 8v5" /><path d="M10.5 10.5h5" /><path {...x} d="M1 9h2" /><path {...x} d="M1.5 13h3" />
 </>);
 export const InvoiceGavelIcon = mk("InvoiceGavel", <>
-  <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" /><path d="m16 16 6-6" />
-  <path d="m21.5 10.5-8-8" /><path d="m8 8 6-6" /><path d="m8.5 7.5 8 8" /><path {...x} d="M14 22h8" />
+  <path d="M12 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8l6 6v3" /><path d="M14 2v6h6" />
+  <path d="M8 10h2" /><path d="M8 14h4" /><path d="M8 18h2" />
+  <path {...x} d="m15 13 3-3 4 4-3 3z" /><path {...x} d="m16.5 15.5-4.5 4.5" /><path {...x} d="M13 22h6" />
 </>);
 export const EmployeeIcon = mk("Employee", <>
   <circle cx="9" cy="7" r="4" /><path d="M2 21v-2a4 4 0 0 1 4-4h5" />
@@ -25,8 +27,8 @@ export const EmployeeIcon = mk("Employee", <>
   <path {...x} d="M16 14v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" /><path {...x} d="M14 17.5h8" />
 </>);
 export const OnlineOrderIcon = mk("OnlineOrder", <>
-  <circle cx="12" cy="12" r="10" /><path {...x} d="M2 12h20" />
-  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M3 7h11v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><path d="M6 7V5a2.5 2.5 0 0 1 5 0v2" />
+  <circle {...x} cx="18" cy="16" r="4.5" /><path {...x} d="M18 11.5a6.5 6.5 0 0 0 0 9 6.5 6.5 0 0 0 0-9" /><path {...x} d="M13.5 16h9" />
 </>);
 export const CashIcon = mk("Cash", <>
   <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
