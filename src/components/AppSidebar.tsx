@@ -1,38 +1,42 @@
+import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronsLeft, ChevronRight, Home, Receipt, History, FileText, ArrowRightLeft, Box,
   BarChart3, Users, ShoppingBag, Wallet, HandCoins, CreditCard, Contact, Settings,
 } from "lucide-react";
+import { NewSaleIcon, InvoiceGavelIcon, EmployeeIcon, OnlineOrderIcon, CashIcon, PayableIcon } from "./nav-icons";
 import logo from "@/assets/emp-logo.png.asset.json";
+
+type NavIconType = React.ComponentType<React.SVGProps<SVGSVGElement> & { ref?: React.Ref<SVGSVGElement> }>;
 
 const groups = [
   { label: "Movimentações", dot: "bg-nav-active-edge", items: [
-    { t: "Nova venda/cond.", i: Receipt }, { t: "Histórico vendas/cond.", i: History, sub: true },
-    { t: "Notas Fiscais", i: FileText }, { t: "Entradas", i: ArrowRightLeft }, { t: "Estoque", i: Box },
-    { t: "Relatórios", i: BarChart3 }, { t: "Funcionários", i: Users }, { t: "Pedidos online", i: ShoppingBag },
+    { t: "Nova venda/cond.", i: NewSaleIcon }, { t: "Histórico vendas/cond.", i: History, sub: true },
+    { t: "Notas Fiscais", i: InvoiceGavelIcon }, { t: "Entradas", i: ArrowRightLeft }, { t: "Estoque", i: Box },
+    { t: "Relatórios", i: BarChart3 }, { t: "Funcionários", i: EmployeeIcon }, { t: "Pedidos online", i: OnlineOrderIcon },
   ]},
   { label: "Financeiro", dot: "bg-chart-2", items: [
-    { t: "Caixa", i: Wallet }, { t: "Contas a Receber", i: HandCoins }, { t: "Contas a Pagar", i: CreditCard },
+    { t: "Caixa", i: CashIcon }, { t: "Contas a Receber", i: HandCoins }, { t: "Contas a Pagar", i: PayableIcon },
   ]},
   { label: "Cadastros", dot: "bg-chart-4", items: [
-    { t: "Clientes/Fornecedores", i: Contact }, { t: "Configurações", i: Settings },
+    { t: "Clientes/Fornecedores", i: Users }, { t: "Configurações", i: Settings },
   ]},
 ];
 
 const EXTRAS: Record<string, string[]> = {
   Users: ["M16 3.128", "M22 21"], History: ["M12 7v5"], "FileText": ["M10 9H8", "M16 13H8", "M16 17H8"],
-  ArrowRightLeft: ["m8 21", "M4 17h16"], ChartColumn: ["M18 17V9", "M13 17V5", "M8 17v-3"],
+  ArrowRightLeft: ["m8 21", "M4 17h16"], ChartColumn: ["M18 17V9"],
   Receipt: ["M16 8h-6", "M12 17.5v-11"], Box: ["m3.3 7", "M12 22V12"], ShoppingBag: ["M16 10a4"],
   CreditCard: ["line"], HandCoins: ["circle"], Contact: ["circle", "M7 22v-2"], House: ["M15 21v-8"], Settings: ["circle"],
 };
-const iconName = (I: typeof Home) => ((I as { displayName?: string }).displayName ?? "").replace(/Icon$/, "");
+const iconName = (I: NavIconType) => ((I as { displayName?: string }).displayName ?? "").replace(/Icon$/, "");
 
-function NavIcon({ Icon, on }: { Icon: typeof Home; on: boolean }) {
+function NavIcon({ Icon, on }: { Icon: NavIconType; on: boolean }) {
   const base = useRef<SVGSVGElement>(null);
   const draw = useRef<SVGSVGElement>(null);
   useEffect(() => {
     const ex = EXTRAS[iconName(Icon)] ?? [];
-    const isExtra = (el: Element) => ex.some((k) => el.tagName === k || (el.getAttribute("d") ?? "").startsWith(k));
+    const isExtra = (el: Element) => el.hasAttribute("data-extra") || ex.some((k) => el.tagName === k || (el.getAttribute("d") ?? "").startsWith(k));
     const drawEls = Array.from(draw.current?.children ?? []);
     const any = drawEls.some(isExtra);
     drawEls.forEach((el) => { el.setAttribute("pathLength", "1");
@@ -61,7 +65,7 @@ function Waves() {
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Dashboard");
-  const item = (t: string, Icon: typeof Home, sub?: boolean) => {
+  const item = (t: string, Icon: NavIconType, sub?: boolean) => {
     const on = active === t;
     return (
       <button key={t} title={t} data-active={on} onClick={() => setActive(t)}
