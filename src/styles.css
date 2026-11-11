@@ -179,7 +179,7 @@
 .nav-icon { display: inline-block; transition: transform .3s; }
 .group:hover .nav-icon { transform: scale(1.1); }
 .group:hover .nav-draw *, .group[data-active="true"] .nav-draw * { stroke-dashoffset: 0; }
-.group:hover .nav-base *, .group[data-active="true"] .nav-base * { opacity: 0.35; }
+.group:hover .nav-base *, .group[data-active="true"] .nav-base * { opacity: 1; }
 
 @keyframes clock-spin { to { transform: rotate(360deg); } }
 .nav-icon .clock-hands { stroke-dashoffset: 1; opacity: 0; transform-origin: 12px 12px; transform-box: view-box; }

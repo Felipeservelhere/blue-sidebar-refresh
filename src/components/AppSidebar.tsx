@@ -19,15 +19,32 @@ const groups = [
   ]},
 ];
 
+const EXTRAS: Record<string, string[]> = {
+  Users: ["M16 3.128", "M22 21"], History: ["M12 7v5"], "FileText": ["M10 9H8", "M16 13H8", "M16 17H8"],
+  ArrowRightLeft: ["m8 21", "M4 17h16"], ChartColumn: ["M18 17V9", "M13 17V5", "M8 17v-3"],
+  Receipt: ["M16 8h-6", "M12 17.5v-11"], Box: ["m3.3 7", "M12 22V12"], ShoppingBag: ["M16 10a4"],
+  CreditCard: ["line"], HandCoins: ["circle"], Contact: ["circle", "M7 22v-2"], House: ["M15 21v-8"], Settings: ["circle"],
+};
+const iconName = (I: typeof Home) => ((I as { displayName?: string }).displayName ?? "").replace(/Icon$/, "");
+
 function NavIcon({ Icon, on }: { Icon: typeof Home; on: boolean }) {
-  const ref = useRef<SVGSVGElement>(null);
-  useEffect(() => { ref.current?.querySelectorAll("*").forEach((el) => el.setAttribute("pathLength", "1"));
-    if (Icon === History) ref.current?.lastElementChild?.classList.add("clock-hands"); }, [Icon]);
+  const base = useRef<SVGSVGElement>(null);
+  const draw = useRef<SVGSVGElement>(null);
+  useEffect(() => {
+    const ex = EXTRAS[iconName(Icon)] ?? [];
+    const isExtra = (el: Element) => ex.some((k) => el.tagName === k || (el.getAttribute("d") ?? "").startsWith(k));
+    const drawEls = Array.from(draw.current?.children ?? []);
+    const any = drawEls.some(isExtra);
+    drawEls.forEach((el) => { el.setAttribute("pathLength", "1");
+      if (any && !isExtra(el)) el.setAttribute("display", "none");
+      if (Icon === History && isExtra(el)) el.classList.add("clock-hands"); });
+    if (any) Array.from(base.current?.children ?? []).forEach((el) => isExtra(el) && el.setAttribute("display", "none"));
+  }, [Icon]);
   const c = on ? "text-nav-active-edge" : "";
   return (
     <span className="nav-icon relative h-5 w-5 shrink-0">
-      <Icon className={`nav-base absolute inset-0 h-5 w-5 ${c}`} />
-      <Icon ref={ref} className={`nav-draw absolute inset-0 h-5 w-5 ${c}`} />
+      <Icon ref={base} className={`nav-base absolute inset-0 h-5 w-5 ${c}`} />
+      <Icon ref={draw} className={`nav-draw absolute inset-0 h-5 w-5 ${c}`} />
     </span>
   );
 }
