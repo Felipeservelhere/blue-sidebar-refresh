@@ -1,3 +1,6 @@
 - [x] Globo saindo da caixa em Pedidos online
 - [x] Novas seções do menu (Cadastros, Administração, Sistema)
 - [x] Hover que expande opções em Integrações e Configurações
+- [x] Submenu de Integrações/Configurações abre painel à direita
+- [x] Animação nos ícones de Cadastros e Integrações
+- [x] Novo ícone Pedidos online

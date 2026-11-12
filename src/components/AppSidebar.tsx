@@ -38,6 +38,8 @@ const EXTRAS: Record<string, string[]> = {
   ArrowRightLeft: ["m8 21", "M4 17h16"], ChartColumn: ["M18 17V9"],
   Receipt: ["M16 8h-6", "M12 17.5v-11"], Box: ["m3.3 7", "M12 22V12"], ShoppingBag: ["M16 10a4"],
   CreditCard: ["line"], HandCoins: ["circle"], Contact: ["circle", "M7 22v-2"], House: ["M15 21v-8"], Settings: ["circle"],
+  Package: ["m7.5 4.27"], Banknote: ["M6 12h.01"],
+  Landmark: ["M10 18v-7", "M14 18v-7"], Ticket: ["M13 5v2", "M13 17v2", "M13 11v2"], Plug: ["M12 22v-5"],
 };
 const iconName = (I: NavIconType) => ((I as { displayName?: string }).displayName ?? "").replace(/Icon$/, "");
 
@@ -75,6 +77,7 @@ function Waves() {
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Dashboard");
+  const [fly, setFly] = useState<{ t: string; top: number; left: number } | null>(null);
   const item = (t: string, Icon: NavIconType, sub?: boolean, children?: string[]) => {
     const on = active === t || !!children?.includes(active);
     const btn = (
@@ -83,23 +86,25 @@ export function AppSidebar() {
         {on && <Waves />}
         <NavIcon Icon={Icon} on={on} />
         {!collapsed && <span className="relative flex-1 text-left">{t}</span>}
-        {!collapsed && (sub || children) && <ChevronRight className={`relative h-4 w-4 transition-transform ${children ? "group-hover/sub:rotate-90" : ""}`} />}
+        {!collapsed && (sub || children) && <ChevronRight className={`relative h-4 w-4 transition-transform ${children ? "" : ""}`} />}
       </button>
     );
-    if (!children || collapsed) return btn;
+    if (!children) return btn;
     return (
-      <div key={t} className="group/sub">
+      <div key={t} onMouseEnter={(e) => { const r = e.currentTarget.getBoundingClientRect(); setFly({ t, top: r.top, left: r.right }); }}
+        onMouseLeave={() => setFly(null)}>
         {btn}
-        <div className="grid grid-rows-[0fr] transition-all duration-300 group-hover/sub:grid-rows-[1fr]">
-          <div className="overflow-hidden">
-            <div className="ml-7 mt-1 space-y-0.5 border-l border-nav-border pl-4">
+        {fly?.t === t && (
+          <div className="fixed z-50 pl-3" style={{ top: fly.top, left: fly.left }}>
+            <div className="animate-in fade-in slide-in-from-left-2 w-56 rounded-xl border border-nav-border bg-nav p-2 text-nav-foreground shadow-2xl">
+              <p className="px-3 pb-2 pt-1 text-xs font-semibold uppercase tracking-widest text-nav-muted">{t}</p>
               {children.map((c) => (
                 <button key={c} onClick={() => setActive(c)}
-                  className={`block w-full rounded-lg px-3 py-1.5 text-left text-sm transition-colors hover:bg-nav-border ${active === c ? "font-semibold text-nav-active-edge" : "text-nav-muted"}`}>{c}</button>
+                  className={`block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-nav-border ${active === c ? "font-semibold text-nav-active-edge" : ""}`}>{c}</button>
               ))}
             </div>
           </div>
-        </div>
+        )}
       </div>
     );
   };
