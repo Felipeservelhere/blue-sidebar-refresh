@@ -2,14 +2,14 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronsLeft, ChevronRight, Home, History, ArrowRightLeft, Box,
-  BarChart3, Users, HandCoins, Settings, Package, FolderTree, Percent, Banknote, Landmark, Ticket, Building2, Activity, Plug,
+  BarChart3, Users, HandCoins, Settings, Package, FolderTree, Percent, Banknote, Landmark, Ticket, Building2, Activity, Plug, Building, FileText, Store, CreditCard, MessageCircle,
 } from "lucide-react";
 import { NewSaleIcon, InvoiceGavelIcon, EmployeeIcon, OnlineOrderIcon, CashIcon, PayableIcon } from "./nav-icons";
 import logo from "@/assets/emp-logo.png.asset.json";
 
 type NavIconType = React.ComponentType<React.SVGProps<SVGSVGElement> & { ref?: React.Ref<SVGSVGElement> }>;
 
-type NavItem = { t: string; i: NavIconType; sub?: boolean; children?: string[] };
+type NavItem = { t: string; i: NavIconType; sub?: boolean; children?: { t: string; i: NavIconType }[] };
 const groups: { label: string; dot: string; items: NavItem[] }[] = [
   { label: "Movimentações", dot: "bg-nav-active-edge", items: [
     { t: "Nova venda/cond.", i: NewSaleIcon }, { t: "Histórico vendas/cond.", i: History, sub: true },
@@ -28,8 +28,8 @@ const groups: { label: string; dot: string; items: NavItem[] }[] = [
     { t: "Empresas (todas)", i: Building2 }, { t: "Telemetria", i: Activity },
   ]},
   { label: "Sistema", dot: "bg-chart-1", items: [
-    { t: "Integrações", i: Plug, children: ["Marketplaces", "Pagamentos", "WhatsApp"] },
-    { t: "Configurações", i: Settings, children: ["Geral", "Usuários", "Impressão"] },
+    { t: "Integrações", i: Plug, children: [{ t: "Marketplaces", i: Store }, { t: "Pagamentos", i: CreditCard }, { t: "WhatsApp", i: MessageCircle }] },
+    { t: "Configurações", i: Settings, children: [{ t: "Minha Empresa", i: Building }, { t: "Fiscal", i: FileText }] },
   ]},
 ];
 
@@ -78,8 +78,8 @@ export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Dashboard");
   const [fly, setFly] = useState<{ t: string; top: number; left: number } | null>(null);
-  const item = (t: string, Icon: NavIconType, sub?: boolean, children?: string[]) => {
-    const on = active === t || !!children?.includes(active);
+  const item = (t: string, Icon: NavIconType, sub?: boolean, children?: { t: string; i: NavIconType }[]) => {
+    const on = active === t || !!children?.some((c) => c.t === active);
     const btn = (
       <button key={t} title={t} data-active={on} onClick={() => setActive(t)}
         className={`group relative overflow-hidden flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-sm transition-colors ${on ? "bg-nav-active border-l-4 border-nav-active-edge font-semibold" : "text-nav-foreground hover:bg-nav-border"}`}>
@@ -91,7 +91,7 @@ export function AppSidebar() {
     );
     if (!children) return btn;
     return (
-      <div key={t} onMouseEnter={(e) => { const r = e.currentTarget.getBoundingClientRect(); setFly({ t, top: r.top, left: r.right }); }}
+      <div key={t} onMouseEnter={(e) => { const r = e.currentTarget.getBoundingClientRect(); setFly({ t, top: Math.min(r.top, window.innerHeight - (52 + children.length * 40) - 12), left: r.right }); }}
         onMouseLeave={() => setFly(null)}>
         {btn}
         {fly?.t === t && (
@@ -99,8 +99,10 @@ export function AppSidebar() {
             <div className="animate-in fade-in slide-in-from-left-2 w-56 rounded-xl border border-nav-border bg-nav p-2 text-nav-foreground shadow-2xl">
               <p className="px-3 pb-2 pt-1 text-xs font-semibold uppercase tracking-widest text-nav-muted">{t}</p>
               {children.map((c) => (
-                <button key={c} onClick={() => setActive(c)}
-                  className={`block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-nav-border ${active === c ? "font-semibold text-nav-active-edge" : ""}`}>{c}</button>
+                <button key={c.t} onClick={() => setActive(c.t)}
+                  className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-nav-border ${active === c.t ? "font-semibold text-nav-active-edge" : ""}`}>
+                  <NavIcon Icon={c.i} on={active === c.t} />{c.t}
+                </button>
               ))}
             </div>
           </div>
