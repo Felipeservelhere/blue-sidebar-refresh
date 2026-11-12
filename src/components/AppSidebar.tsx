@@ -90,23 +90,24 @@ export function AppSidebar() {
       </button>
     );
     if (!children) return btn;
+    const open = fly?.t === t && !collapsed;
     return (
-      <div key={t} onMouseEnter={(e) => { const r = e.currentTarget.getBoundingClientRect(); setFly({ t, top: Math.min(r.top, window.innerHeight - (52 + children.length * 40) - 12), left: r.right }); }}
-        onMouseLeave={() => setFly(null)}>
+      <div key={t} onMouseEnter={() => setFly({ t, top: 0, left: 0 })} onMouseLeave={() => setFly(null)}>
         {btn}
-        {fly?.t === t && (
-          <div className="fixed z-50 pl-3" style={{ top: fly.top, left: fly.left }}>
-            <div className="animate-in fade-in slide-in-from-left-2 w-56 rounded-xl border border-nav-border bg-nav p-2 text-nav-foreground shadow-2xl">
-              <p className="px-3 pb-2 pt-1 text-xs font-semibold uppercase tracking-widest text-nav-muted">{t}</p>
-              {children.map((c) => (
-                <button key={c.t} onClick={() => setActive(c.t)}
-                  className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-nav-border ${active === c.t ? "font-semibold text-nav-active-edge" : ""}`}>
-                  <NavIcon Icon={c.i} on={active === c.t} />{c.t}
+        <div className={`grid transition-all duration-300 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+          <div className="overflow-hidden">
+            <div className={`grid gap-2 px-2 pt-2 pb-1 ${children.length > 2 ? "grid-cols-3" : "grid-cols-2"}`}>
+              {children.map((c, i) => (
+                <button key={c.t} onClick={() => setActive(c.t)} data-active={active === c.t}
+                  style={{ transitionDelay: open ? `${80 + i * 70}ms` : "0ms" }}
+                  className={`group flex flex-col items-center gap-1.5 rounded-xl border border-nav-border px-2 py-3 text-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-nav-active-edge hover:bg-nav-border ${open ? "translate-y-0 scale-100 opacity-100" : "translate-y-2 scale-90 opacity-0"} ${active === c.t ? "border-nav-active-edge text-nav-active-edge font-semibold" : ""}`}>
+                  <NavIcon Icon={c.i} on={active === c.t} />
+                  <span className="text-center leading-tight">{c.t}</span>
                 </button>
               ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     );
   };
