@@ -27,9 +27,8 @@ export const EmployeeIcon = mk("Employee", <>
   <path {...x} d="M16 14v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1" /><path {...x} d="M14 17.5h8" />
 </>);
 export const OnlineOrderIcon = mk("OnlineOrder", <>
-  <path d="M15 9.5a3 3 0 0 1-6 0" /><path d="M3.103 6.034h17.794" />
-  <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
-  <circle {...x} cx="12" cy="17.8" r="2.7" /><path {...x} d="M12 15.1a3.8 3.8 0 0 0 0 5.4 3.8 3.8 0 0 0 0-5.4" /><path {...x} d="M9.3 17.8h5.4" />
+  <path d="M3 10v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10" /><path d="M3 10h18" /><path d="M15 14a3 3 0 0 1-6 0" />
+  <path {...x} d="M6.5 10a5.5 5.5 0 0 1 11 0" /><path {...x} d="M12 4.5c-1.6 1.5-2.4 3.5-2.4 5.5" /><path {...x} d="M12 4.5c1.6 1.5 2.4 3.5 2.4 5.5" /><path {...x} d="M7.6 7.2h8.8" />
 </>);
 export const CashIcon = mk("Cash", <>
   <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />

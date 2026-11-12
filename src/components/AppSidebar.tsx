@@ -1,15 +1,16 @@
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import {
-  ChevronsLeft, ChevronRight, Home, Receipt, History, FileText, ArrowRightLeft, Box,
-  BarChart3, Users, ShoppingBag, Wallet, HandCoins, CreditCard, Contact, Settings,
+  ChevronsLeft, ChevronRight, Home, History, ArrowRightLeft, Box,
+  BarChart3, Users, HandCoins, Settings, Package, FolderTree, Percent, Banknote, Landmark, Ticket, Building2, Activity, Plug,
 } from "lucide-react";
 import { NewSaleIcon, InvoiceGavelIcon, EmployeeIcon, OnlineOrderIcon, CashIcon, PayableIcon } from "./nav-icons";
 import logo from "@/assets/emp-logo.png.asset.json";
 
 type NavIconType = React.ComponentType<React.SVGProps<SVGSVGElement> & { ref?: React.Ref<SVGSVGElement> }>;
 
-const groups = [
+type NavItem = { t: string; i: NavIconType; sub?: boolean; children?: string[] };
+const groups: { label: string; dot: string; items: NavItem[] }[] = [
   { label: "Movimentações", dot: "bg-nav-active-edge", items: [
     { t: "Nova venda/cond.", i: NewSaleIcon }, { t: "Histórico vendas/cond.", i: History, sub: true },
     { t: "Notas Fiscais", i: InvoiceGavelIcon }, { t: "Entradas", i: ArrowRightLeft }, { t: "Estoque", i: Box },
@@ -19,7 +20,16 @@ const groups = [
     { t: "Caixa", i: CashIcon }, { t: "Contas a Receber", i: HandCoins }, { t: "Contas a Pagar", i: PayableIcon },
   ]},
   { label: "Cadastros", dot: "bg-chart-4", items: [
-    { t: "Clientes/Fornecedores", i: Users }, { t: "Configurações", i: Settings },
+    { t: "Clientes/Fornecedores", i: Users }, { t: "Produtos", i: Package }, { t: "Grupos", i: FolderTree },
+    { t: "Situações Tributárias", i: Percent }, { t: "Formas de Pagamento", i: Banknote },
+    { t: "Contas Bancárias", i: Landmark }, { t: "Cupons", i: Ticket },
+  ]},
+  { label: "Administração", dot: "bg-chart-5", items: [
+    { t: "Empresas (todas)", i: Building2 }, { t: "Telemetria", i: Activity },
+  ]},
+  { label: "Sistema", dot: "bg-chart-1", items: [
+    { t: "Integrações", i: Plug, children: ["Marketplaces", "Pagamentos", "WhatsApp"] },
+    { t: "Configurações", i: Settings, children: ["Geral", "Usuários", "Impressão"] },
   ]},
 ];
 
@@ -65,16 +75,32 @@ function Waves() {
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Dashboard");
-  const item = (t: string, Icon: NavIconType, sub?: boolean) => {
-    const on = active === t;
-    return (
+  const item = (t: string, Icon: NavIconType, sub?: boolean, children?: string[]) => {
+    const on = active === t || !!children?.includes(active);
+    const btn = (
       <button key={t} title={t} data-active={on} onClick={() => setActive(t)}
         className={`group relative overflow-hidden flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-sm transition-colors ${on ? "bg-nav-active border-l-4 border-nav-active-edge font-semibold" : "text-nav-foreground hover:bg-nav-border"}`}>
         {on && <Waves />}
         <NavIcon Icon={Icon} on={on} />
         {!collapsed && <span className="relative flex-1 text-left">{t}</span>}
-        {!collapsed && sub && <ChevronRight className="h-4 w-4" />}
+        {!collapsed && (sub || children) && <ChevronRight className={`relative h-4 w-4 transition-transform ${children ? "group-hover/sub:rotate-90" : ""}`} />}
       </button>
+    );
+    if (!children || collapsed) return btn;
+    return (
+      <div key={t} className="group/sub">
+        {btn}
+        <div className="grid grid-rows-[0fr] transition-all duration-300 group-hover/sub:grid-rows-[1fr]">
+          <div className="overflow-hidden">
+            <div className="ml-7 mt-1 space-y-0.5 border-l border-nav-border pl-4">
+              {children.map((c) => (
+                <button key={c} onClick={() => setActive(c)}
+                  className={`block w-full rounded-lg px-3 py-1.5 text-left text-sm transition-colors hover:bg-nav-border ${active === c ? "font-semibold text-nav-active-edge" : "text-nav-muted"}`}>{c}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     );
   };
   return (
@@ -87,6 +113,7 @@ export function AppSidebar() {
         </button>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-6">
+        {!collapsed && <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-widest text-nav-muted">Meu Negócio</p>}
         {item("Dashboard", Home)}
         {groups.map((g) => (
           <div key={g.label} className="border-t border-nav-border pt-4 mt-4 first:mt-4">
@@ -95,7 +122,7 @@ export function AppSidebar() {
                 <span className={`h-2 w-2 rounded-full ${g.dot}`} />{g.label}
               </p>
             )}
-            {g.items.map((x) => item(x.t, x.i, x.sub))}
+            {g.items.map((x) => item(x.t, x.i, x.sub, x.children))}
           </div>
         ))}
       </nav>

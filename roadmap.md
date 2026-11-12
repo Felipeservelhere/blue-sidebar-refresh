@@ -1,0 +1,3 @@
+- [x] Globo saindo da caixa em Pedidos online
+- [x] Novas seções do menu (Cadastros, Administração, Sistema)
+- [x] Hover que expande opções em Integrações e Configurações
